@@ -3,6 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Thgs\AttributesLoader\AttributesLoader;
 use Thgs\AttributesLoader\TestAttribute;
+use Thgs\AttributesLoader\TestAttribute2;
 use Thgs\AttributesLoader\TestSubject;
 
 class AttributesLoaderTest extends TestCase
@@ -14,8 +15,19 @@ class AttributesLoaderTest extends TestCase
 
         $attributesCollected = $loader->getAttributesCollected();
 
-        $this->assertCount(2, $attributesCollected);
-        $this->assertArrayIsList($attributesCollected);
+        $this->assertCount(3, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
+    }
+
+    public function testCanFilterSpecificAttribute()
+    {
+        $loader = new AttributesLoader();
+
+        $loader->only(TestAttribute2::class);
+        $loader->fromClass(TestSubject::class);
+        $attributesCollected = $loader->getAttributesCollected();
+
+        $this->assertCount(1, $attributesCollected);
+        $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
     }
 }

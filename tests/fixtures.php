@@ -17,11 +17,29 @@ class TestAttribute
     }
 }
 
+#[Attribute()]
+class TestAttribute2
+{
+    public function __construct(private $where = null)
+    {
+    }
+
+    public function getWhere()
+    {
+        return $this->where;
+    }
+}
+
 #[TestAttribute(where: 'class')]
 class TestSubject
 {
     #[TestAttribute(where: 'method')]
     public function method()
+    {
+    }
+
+    #[TestAttribute2]
+    public function method2()
     {
     }
 }
