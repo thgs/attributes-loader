@@ -35,8 +35,11 @@ class AttributesLoaderTest extends TestCase
     {
         $loader = new AttributesLoader();
 
-        $loader->target(\Attribute::TARGET_METHOD);
-        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttribute::class]));
+        $attributesCollected = $loader->fromClass(
+            TestSubject::class,
+            new Filter(onlyAttributes: [TestAttribute::class]),
+            \Attribute::TARGET_METHOD
+        );
 
         $this->assertCount(1, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
@@ -49,8 +52,11 @@ class AttributesLoaderTest extends TestCase
     {
         $loader = new AttributesLoader();
 
-        $loader->target(\Attribute::TARGET_PROPERTY);
-        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttribute2::class]));
+        $attributesCollected = $loader->fromClass(
+            TestSubject::class,
+            new Filter(onlyAttributes: [TestAttribute2::class]),
+            \Attribute::TARGET_PROPERTY
+        );
 
         $this->assertCount(2, $attributesCollected);
         $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
@@ -63,8 +69,11 @@ class AttributesLoaderTest extends TestCase
     {
         $loader = new AttributesLoader();
 
-        $loader->target(\Attribute::TARGET_CLASS_CONSTANT);
-        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttributeClassConstant::class]));
+        $attributesCollected = $loader->fromClass(
+            TestSubject::class,
+            new Filter(onlyAttributes: [TestAttributeClassConstant::class]),
+            \Attribute::TARGET_CLASS_CONSTANT
+        );
 
         $this->assertCount(1, $attributesCollected);
         $this->assertInstanceOf(TestAttributeClassConstant::class, $attributesCollected[0]);
@@ -74,8 +83,11 @@ class AttributesLoaderTest extends TestCase
     {
         $loader = new AttributesLoader();
 
-        $loader->target(\Attribute::TARGET_PARAMETER);
-        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttributeParameter::class]));
+        $attributesCollected = $loader->fromClass(
+            TestSubject::class,
+            new Filter(onlyAttributes: [TestAttributeParameter::class]),
+            \Attribute::TARGET_PARAMETER
+        );
 
         $this->assertCount(2, $attributesCollected);
         $this->assertInstanceOf(TestAttributeParameter::class, $attributesCollected[0]);
