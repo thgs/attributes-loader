@@ -2,28 +2,13 @@
 
 namespace Thgs\AttributesLoader;
 
-
 class AttributesLoader
 {
-    private AttributesCollection $attributes;
-    private array $filterAttributes;
-    private $instanceOf = true;
     private int $target;
 
-    public function __construct(\Attribute ...$attributes)
+    public function __construct(?int $target = null)
     {
-        $this->attributes = new AttributesCollection(...$attributes);
-        $this->target = \Attribute::TARGET_ALL;
-    }
-
-    public function only(...$attributes)
-    {
-        $this->filterAttributes = $attributes;
-    }
-
-    public function withoutChildren()
-    {
-        $this->instanceOf = false;
+        $this->target = $target ?? \Attribute::TARGET_ALL;
     }
 
     public function target(int $newTarget)
@@ -31,29 +16,34 @@ class AttributesLoader
         $this->target = $newTarget;
     }
 
-    public function fromClass(string $className): void
+    public function fromClass(string $className, ?array $onlyAttributes = null, bool $instanceOf = false): array
     {
         $class = new \ReflectionClass($className);
 
-        if (empty($this->filterAttributes)) {
-            $this->getAllClassAttributes($class, null);
-            return;
+        if (empty($onlyAttributes)) {
+            return $this->getAllClassAttributes($class, null, $instanceOf);
         }
 
-        foreach ($this->filterAttributes as $filterAttribute) {
-            $this->getAllClassAttributes($class, $filterAttribute, $this->instanceOf);
+        $attributes = [];
+        foreach ($onlyAttributes as $filterAttribute) {
+            $attributes = array_merge(
+                $attributes,
+                $this->getAllClassAttributes($class, $filterAttribute, $instanceOf)
+            );
         }
+        return $attributes;
     }
 
-    private function getAllClassAttributes(\ReflectionClass $class, ?string $attributeFilter, bool $instanceOf = false): void
+    private function getAllClassAttributes(\ReflectionClass $class, ?string $attributeFilter, bool $instanceOf = false): array
     {
+        $attributes = [];
         $flag = $instanceOf ? \ReflectionAttribute::IS_INSTANCEOF : 0;
 
         // class Attributes
         if ($this->target & \Attribute::TARGET_CLASS) {
             $classReflectionAttributes = $class->getAttributes($attributeFilter, $flag);
             $classAttributes = $this->transformToAttributes(...$classReflectionAttributes);
-            $this->attributes->addMultiple(...$classAttributes);
+            $attributes = array_merge($attributes, $classAttributes);
         }
 
         // method attributes
@@ -61,9 +51,10 @@ class AttributesLoader
             foreach ($class->getMethods() as $method) {
                 $reflectedAttributes = $method->getAttributes($attributeFilter, $flag);
                 $methodAttributes = $this->transformToAttributes(...$reflectedAttributes);
-                $this->attributes->addMultiple(...$methodAttributes);
+                $attributes = array_merge($attributes, $methodAttributes);
             }
         }
+        return $attributes;
     }
 
     private function transformToAttributes(\ReflectionAttribute ...$reflectionAttributes)
@@ -73,10 +64,5 @@ class AttributesLoader
             $attributes[] = $reflectionAttribute->newInstance();
         }
         return $attributes;
-    }
-
-    public function getAttributesCollected()
-    {
-        return $this->attributes->all();
     }
 }
