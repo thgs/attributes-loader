@@ -5,6 +5,7 @@ use Thgs\AttributesLoader\AttributesLoader;
 use Thgs\AttributesLoader\TestAttribute;
 use Thgs\AttributesLoader\TestAttribute2;
 use Thgs\AttributesLoader\TestAttributeClassConstant;
+use Thgs\AttributesLoader\TestAttributeParameter;
 use Thgs\AttributesLoader\TestSubject;
 
 class AttributesLoaderTest extends TestCase
@@ -15,7 +16,7 @@ class AttributesLoaderTest extends TestCase
 
         $attributesCollected = $loader->fromClass(TestSubject::class);
 
-        $this->assertCount(6, $attributesCollected);
+        $this->assertCount(9, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
     }
 
@@ -25,7 +26,7 @@ class AttributesLoaderTest extends TestCase
 
         $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttribute2::class]);
 
-        $this->assertCount(3, $attributesCollected);
+        $this->assertCount(4, $attributesCollected);
         $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
     }
 
@@ -66,5 +67,16 @@ class AttributesLoaderTest extends TestCase
 
         $this->assertCount(1, $attributesCollected);
         $this->assertInstanceOf(TestAttributeClassConstant::class, $attributesCollected[0]);
+    }
+
+    public function testCanRetrieveAttributesFromParameters()
+    {
+        $loader = new AttributesLoader();
+
+        $loader->target(\Attribute::TARGET_PARAMETER);
+        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttributeParameter::class]);
+
+        $this->assertCount(2, $attributesCollected);
+        $this->assertInstanceOf(TestAttributeParameter::class, $attributesCollected[0]);
     }
 }

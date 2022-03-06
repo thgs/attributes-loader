@@ -73,6 +73,17 @@ final class AttributesLoader
             }
         }
 
+        // parameter attributes
+        if ($this->target & \Attribute::TARGET_PARAMETER) {
+            foreach ($class->getMethods() as $method) {
+                foreach ($method->getParameters() as $parameter) {
+                    $reflectedAttributes = $parameter->getAttributes($attributeFilter, $flag);
+                    $propertyAttributes = $this->transformToAttributes(...$reflectedAttributes);
+                    $attributes = array_merge($attributes, $propertyAttributes);
+                }
+            }
+        }
+
         return $attributes;
     }
 

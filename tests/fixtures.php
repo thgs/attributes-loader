@@ -35,6 +35,11 @@ class TestAttributeClassConstant
 {
 }
 
+#[Attribute]
+class TestAttributeParameter
+{
+}
+
 #[TestAttribute(where: 'class')]
 class TestSubject
 {
@@ -55,8 +60,17 @@ class TestSubject
     {
     }
 
-    #[TestAttribute2]
+    #[TestAttribute2(where: 'method')]
     public function method2()
     {
+    }
+
+    public function forParameters(
+        #[TestAttributeParameter]
+        $param1,
+        #[TestAttributeParameter]
+        $param2
+    ) {
+
     }
 }
