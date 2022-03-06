@@ -6,17 +6,17 @@ class AttributesCollection
 {
     private array $attributes;
 
-    public function __construct(\Attribute ...$attributes)
+    public function __construct(...$attributes)
     {
         $this->attributes = $attributes;
     }
 
-    public function add(\Attribute $attribute)
+    public function add($attribute)
     {
         $this->attributes[] = $attribute;
     }
 
-    public function addMultiple(\Attribute ...$attributes)
+    public function addMultiple(...$attributes)
     {
         foreach ($attributes as $attribute) {
             $this->add($attribute);

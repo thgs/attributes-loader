@@ -13,14 +13,14 @@ class AttributesLoader
         $this->attributes = new AttributesCollection(...$attributes);
     }
 
-    public function fromClass(string $className): array
+    public function fromClass(string $className): void
     {
         $class = new \ReflectionClass($className);
 
         // @todo do it according to filters specified
 
         // class Attributes
-        $classReflectionAttributes = $class->getAttributes(Route::class);
+        $classReflectionAttributes = $class->getAttributes();
         $classAttributes = $this->transformToAttributes(...$classReflectionAttributes);
         $this->attributes->addMultiple(...$classAttributes);
 
@@ -30,8 +30,6 @@ class AttributesLoader
             $methodAttributes = $this->transformToAttributes(...$reflectedAttributes);
             $this->attributes->addMultiple(...$methodAttributes);
         }
-
-        return [];
     }
 
     private function transformToAttributes(ReflectionAttribute ...$reflectionAttributes)
