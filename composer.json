@@ -19,6 +19,11 @@
         "php": "^8"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9"
+        "phpunit/phpunit": "10.0.x-dev"
+    },
+    "autoload-dev": {
+        "files": [
+            "tests/fixtures.php"
+        ]
     }
 }
