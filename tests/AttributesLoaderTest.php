@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Thgs\AttributesLoader\AttributesLoader;
+use Thgs\AttributesLoader\Filter;
 use Thgs\AttributesLoader\TestAttribute;
 use Thgs\AttributesLoader\TestAttribute2;
 use Thgs\AttributesLoader\TestAttributeClassConstant;
@@ -14,7 +15,7 @@ class AttributesLoaderTest extends TestCase
     {
         $loader = new AttributesLoader();
 
-        $attributesCollected = $loader->fromClass(TestSubject::class);
+        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter());
 
         $this->assertCount(9, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
@@ -24,7 +25,7 @@ class AttributesLoaderTest extends TestCase
     {
         $loader = new AttributesLoader();
 
-        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttribute2::class]);
+        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttribute2::class]));
 
         $this->assertCount(4, $attributesCollected);
         $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
@@ -35,7 +36,7 @@ class AttributesLoaderTest extends TestCase
         $loader = new AttributesLoader();
 
         $loader->target(\Attribute::TARGET_METHOD);
-        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttribute::class]);
+        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttribute::class]));
 
         $this->assertCount(1, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
@@ -49,7 +50,7 @@ class AttributesLoaderTest extends TestCase
         $loader = new AttributesLoader();
 
         $loader->target(\Attribute::TARGET_PROPERTY);
-        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttribute2::class]);
+        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttribute2::class]));
 
         $this->assertCount(2, $attributesCollected);
         $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
@@ -63,7 +64,7 @@ class AttributesLoaderTest extends TestCase
         $loader = new AttributesLoader();
 
         $loader->target(\Attribute::TARGET_CLASS_CONSTANT);
-        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttributeClassConstant::class]);
+        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttributeClassConstant::class]));
 
         $this->assertCount(1, $attributesCollected);
         $this->assertInstanceOf(TestAttributeClassConstant::class, $attributesCollected[0]);
@@ -74,7 +75,7 @@ class AttributesLoaderTest extends TestCase
         $loader = new AttributesLoader();
 
         $loader->target(\Attribute::TARGET_PARAMETER);
-        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttributeParameter::class]);
+        $attributesCollected = $loader->fromClass(TestSubject::class, new Filter(onlyAttributes: [TestAttributeParameter::class]));
 
         $this->assertCount(2, $attributesCollected);
         $this->assertInstanceOf(TestAttributeParameter::class, $attributesCollected[0]);

@@ -16,21 +16,22 @@ final class AttributesLoader
         $this->target = $newTarget;
     }
 
-    public function fromClass(string $className, ?array $onlyAttributes = null, bool $instanceOf = false): array
+    public function fromClass(string $className, Filter $filter): array
     {
         $class = new \ReflectionClass($className);
 
-        if (empty($onlyAttributes)) {
-            return $this->getAllClassAttributes($class, null, $instanceOf);
+        if (empty($filter->onlyAttributes)) {
+            return $this->getAllClassAttributes($class, null, $filter->instanceOf);
         }
 
         $attributes = [];
-        foreach ($onlyAttributes as $filterAttribute) {
+        foreach ($filter->onlyAttributes as $filterAttribute) {
             $attributes = array_merge(
                 $attributes,
-                $this->getAllClassAttributes($class, $filterAttribute, $instanceOf)
+                $this->getAllClassAttributes($class, $filterAttribute, $filter->instanceOf)
             );
         }
+
         return $attributes;
     }
 
