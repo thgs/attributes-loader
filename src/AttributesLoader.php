@@ -35,8 +35,6 @@ class AttributesLoader
     {
         $class = new \ReflectionClass($className);
 
-        // @todo do it according to filters specified
-
         if (empty($this->filterAttributes)) {
             $this->getAllClassAttributes($class, null);
             return;
