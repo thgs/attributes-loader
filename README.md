@@ -42,3 +42,18 @@ $loader->fromClass(TestSubject::class);
 /** @var TestAttribute[] $attributes */
 $attributes = $loader->getAttributesCollected();
 ```
+
+Or use the FluentAttributeCollector
+
+```php
+<?php
+
+$attributesCollected = FluentAttributeCollector::new()
+    ->only([TestAttribute2::class])
+    ->target(\Attribute::TARGET_PROPERTY)
+    ->fromClass(TestSubject::class)
+    ->getCollectedAttributes();
+
+```
+
+More examples of usage can be found currently by looking at the [tests](https://github.com/thgs/attributes-loader/tree/main/tests).

@@ -27,4 +27,9 @@ class AttributesCollection
     {
         return $this->attributes;
     }
+
+    public function clear()
+    {
+        $this->attributes = [];
+    }
 }
