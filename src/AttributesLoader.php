@@ -2,7 +2,7 @@
 
 namespace Thgs\AttributesLoader;
 
-class AttributesLoader
+final class AttributesLoader
 {
     private int $target;
 
