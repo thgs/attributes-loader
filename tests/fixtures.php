@@ -30,9 +30,17 @@ class TestAttribute2
     }
 }
 
+#[Attribute]
+class TestAttributeClassConstant
+{
+}
+
 #[TestAttribute(where: 'class')]
 class TestSubject
 {
+    #[TestAttributeClassConstant]
+    private const SOMETHING = 'something';
+
     #[TestAttribute2(where: 'property')]
     private $property;
 

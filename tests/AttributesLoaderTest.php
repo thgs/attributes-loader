@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Thgs\AttributesLoader\AttributesLoader;
 use Thgs\AttributesLoader\TestAttribute;
 use Thgs\AttributesLoader\TestAttribute2;
+use Thgs\AttributesLoader\TestAttributeClassConstant;
 use Thgs\AttributesLoader\TestSubject;
 
 class AttributesLoaderTest extends TestCase
@@ -14,7 +15,7 @@ class AttributesLoaderTest extends TestCase
 
         $attributesCollected = $loader->fromClass(TestSubject::class);
 
-        $this->assertCount(5, $attributesCollected);
+        $this->assertCount(6, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
     }
 
@@ -54,5 +55,16 @@ class AttributesLoaderTest extends TestCase
         $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[1]);
         $this->assertEquals('property', $attributesCollected[0]->getWhere());
         $this->assertEquals('property', $attributesCollected[1]->getWhere());
+    }
+
+    public function testCanRetrieveAttributesFromClassConstants()
+    {
+        $loader = new AttributesLoader();
+
+        $loader->target(\Attribute::TARGET_CLASS_CONSTANT);
+        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttributeClassConstant::class]);
+
+        $this->assertCount(1, $attributesCollected);
+        $this->assertInstanceOf(TestAttributeClassConstant::class, $attributesCollected[0]);
     }
 }

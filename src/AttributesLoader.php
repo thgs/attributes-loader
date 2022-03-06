@@ -64,6 +64,15 @@ final class AttributesLoader
             }
         }
 
+        // class constant attributes
+        if ($this->target & \Attribute::TARGET_CLASS_CONSTANT) {
+            foreach ($class->getReflectionConstants() as $constant) {
+                $reflectedAttributes = $constant->getAttributes($attributeFilter, $flag);
+                $propertyAttributes = $this->transformToAttributes(...$reflectedAttributes);
+                $attributes = array_merge($attributes, $propertyAttributes);
+            }
+        }
+
         return $attributes;
     }
 
