@@ -33,6 +33,15 @@ class TestAttribute2
 #[TestAttribute(where: 'class')]
 class TestSubject
 {
+    #[TestAttribute2(where: 'property')]
+    private $property;
+
+    public function __construct(
+        #[TestAttribute2(where: 'property')]
+        private $property2,
+    ) {
+    }
+
     #[TestAttribute(where: 'method')]
     public function method()
     {

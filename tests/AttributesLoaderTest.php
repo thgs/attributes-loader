@@ -14,7 +14,7 @@ class AttributesLoaderTest extends TestCase
 
         $attributesCollected = $loader->fromClass(TestSubject::class);
 
-        $this->assertCount(3, $attributesCollected);
+        $this->assertCount(5, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
     }
 
@@ -24,7 +24,7 @@ class AttributesLoaderTest extends TestCase
 
         $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttribute2::class]);
 
-        $this->assertCount(1, $attributesCollected);
+        $this->assertCount(3, $attributesCollected);
         $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
     }
 
@@ -38,5 +38,21 @@ class AttributesLoaderTest extends TestCase
         $this->assertCount(1, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
         $this->assertEquals('method', $attributesCollected[0]->getWhere());
+    }
+
+    // missing tests for class/method attributes but at this point they are implied from the above
+
+    public function testCanRetrieveAttributesFromProperties()
+    {
+        $loader = new AttributesLoader();
+
+        $loader->target(\Attribute::TARGET_PROPERTY);
+        $attributesCollected = $loader->fromClass(TestSubject::class, onlyAttributes: [TestAttribute2::class]);
+
+        $this->assertCount(2, $attributesCollected);
+        $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
+        $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[1]);
+        $this->assertEquals('property', $attributesCollected[0]->getWhere());
+        $this->assertEquals('property', $attributesCollected[1]->getWhere());
     }
 }

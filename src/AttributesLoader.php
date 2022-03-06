@@ -54,6 +54,16 @@ final class AttributesLoader
                 $attributes = array_merge($attributes, $methodAttributes);
             }
         }
+
+        // property attributes
+        if ($this->target & \Attribute::TARGET_PROPERTY) {
+            foreach ($class->getProperties() as $property) {
+                $reflectedAttributes = $property->getAttributes($attributeFilter, $flag);
+                $propertyAttributes = $this->transformToAttributes(...$reflectedAttributes);
+                $attributes = array_merge($attributes, $propertyAttributes);
+            }
+        }
+
         return $attributes;
     }
 
