@@ -1,0 +1,19 @@
+{
+    "name": "thgs/attributes-loader",
+    "description": "Collects PHP 8.x attributes for you",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Thgs\\AttributesLoader\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "thgs",
+            "email": "theogpl57@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
