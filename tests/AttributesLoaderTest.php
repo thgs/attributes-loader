@@ -11,10 +11,10 @@ class AttributesLoaderTest extends TestCase
     public function testCanLoadAttributesFromClass()
     {
         $loader = new AttributesLoader();
+
         $loader->fromClass(TestSubject::class);
 
         $attributesCollected = $loader->getAttributesCollected();
-
         $this->assertCount(3, $attributesCollected);
         $this->assertInstanceOf(TestAttribute::class, $attributesCollected[0]);
     }
@@ -25,8 +25,8 @@ class AttributesLoaderTest extends TestCase
 
         $loader->only(TestAttribute2::class);
         $loader->fromClass(TestSubject::class);
-        $attributesCollected = $loader->getAttributesCollected();
 
+        $attributesCollected = $loader->getAttributesCollected();
         $this->assertCount(1, $attributesCollected);
         $this->assertInstanceOf(TestAttribute2::class, $attributesCollected[0]);
     }
